@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var filledStars: Int = 0  // to track completed modules
+    @State private var filledStars: Int = 0
     
     let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -18,12 +18,10 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
                 Color.cloudWhite
                     .ignoresSafeArea()
                 
                 VStack(spacing: 24) {
-                    // Header with title and settings
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Lumo")
@@ -31,81 +29,95 @@ struct HomeView: View {
                                 .foregroundColor(.deepIndigo)
                             
                             Text("Let's Learn Together")
-                                                            .font(.subheadline)
-                                                            .foregroundColor(.steelGrey)
-                                                    }
-                                                    
-                                                    Spacer()
-                                                    
-                                                    // Settings button
-                                                    Button(action: {
-                                                        print("Settings tapped")
-                                                    }) {
-                                                        Image(systemName: "gearshape.fill")
-                                                            .font(.system(size: 24))
-                                                            .foregroundColor(.steelGrey)
-                                                    }
-                                                }
-                                                .padding(.horizontal, 24)
-                                                .padding(.top, 20)
-                                                
-                                                // Token Board
-                                                TokenBoardView(filledStars: filledStars)
-                                                    .padding(.horizontal, 24)
-                                                
-                                                // Module Grid - 2x3 layout
-                                                ScrollView {
-                                                    LazyVGrid(columns: columns, spacing: 16) {
-                                                        // Row 1
-                                                        ModuleCard(
-                                                            title: "Counting",
-                                                            iconName: "hand.thumbsup.fill",
-                                                            color: .oceanSlate,
-                                                            action: { print("Counting tapped - navigation will be added") }
-                                                        )
-                                                        
-                                                        ModuleCard(
-                                                            title: "Coloring",
-                                                            iconName: "paintbrush.fill",
-                                                            color: .dustyTeal,
-                                                            action: { print("Coloring tapped - navigation will be added") }
-                                                        )
-                                                        
-                                                        // Row 2
-                                                        ModuleCard(
-                                                            title: "Math",
-                                                            iconName: "plus.circle.fill",
-                                                            color: .mutedPeriwinkle,
-                                                            action: { print("Math tapped - navigation will be added") }
-                                                        )
-                                                        
-                                                        ModuleCard(
-                                                            title: "Spelling",
-                                                            iconName: "textformat.abc",
-                                                            color: .sageGreen,
-                                                            action: { print("Spelling tapped - navigation will be added") }
-                                                        )
-                                                        
-                                                        // Row 3 - Lumi on left, Tracing on right
-                                                        LumiCard()
-                                                        
-                                                        ModuleCard(
-                                                            title: "Tracing",
-                                                            iconName: "pencil.tip",
-                                                            color: .harvestGold,
-                                                            action: { print("Tracing tapped - navigation will be added") }
-                                                        )
-                                                    }
-                                                    .padding(.horizontal, 24)
-                                                    .padding(.bottom, 24)
-                                                }
-                                            }
-                                        }
-                                        .navigationBarHidden(true)
-                                    }
-                                }
+                                .font(.subheadline)
+                                .foregroundColor(.steelGrey)
+                        }
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            print("Settings tapped")
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(.steelGrey)
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 20)
+                    
+                    TokenBoardView(filledStars: filledStars)
+                        .padding(.horizontal, 24)
+                    
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 16) {
+                            NavigationLink {
+                                CountingView(filledStars: $filledStars)
+                            } label: {
+                                ModuleCard(
+                                    title: "Counting",
+                                    iconName: "hand.thumbsup.fill",
+                                    color: .oceanSlate
+                                )
                             }
+                            .buttonStyle(PlainButtonStyle())
+                            
+                            NavigationLink {
+                                ColoringView(filledStars: $filledStars)
+                            } label: {
+                                ModuleCard(
+                                    title: "Coloring",
+                                    iconName: "paintbrush.fill",
+                                    color: .dustyTeal
+                                )
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            
+                            NavigationLink {
+                                MathView(filledStars: $filledStars)
+                            } label: {
+                                ModuleCard(
+                                    title: "Math",
+                                    iconName: "plus.circle.fill",
+                                    color: .mutedPeriwinkle
+                                )
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            
+                            NavigationLink {
+                                SpellingView(filledStars: $filledStars)
+                            } label: {
+                                ModuleCard(
+                                    title: "Spelling",
+                                    iconName: "textformat.abc",
+                                    color: .sageGreen
+                                )
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            
+                            LumiCard()
+                            
+                            NavigationLink {
+                                TracingView(filledStars: $filledStars)
+                            } label: {
+                                ModuleCard(
+                                    title: "Tracing",
+                                    iconName: "pencil.tip",
+                                    color: .harvestGold
+                                )
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, 24)
+                    }
+                }
+            }
+            .navigationBarHidden(true)
+        }
+    }
+}
 
-                            #Preview {
-                                HomeView()
-                            }
+#Preview {
+    HomeView()
+}
